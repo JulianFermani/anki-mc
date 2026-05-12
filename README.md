@@ -40,14 +40,14 @@ These values in the "Answer" field must be separated by a single space.
 This fork supports up to 10 answer choices per note, using fields `Q_1` through `Q_10`.
 The order and number of values in the "Answer" field must correspond with the choices `Q_1` to `Q_10`.
 If you don't need all the choices, just leave the remaining "Q_" fields blank and only enter as many values as you need in the "Answers" field.
-This fork uses the note type `Multiple Choice Extende` to avoid conflicting with the original add-on's `AllInOne (kprim, mc, sc)` note type.
+This fork uses the note type `Multiple Choice Extended` to avoid conflicting with the original add-on's `AllInOne (kprim, mc, sc)` note type.
 Keyboard shortcuts support answer rows 1 to 10; use `Alt+0` for the tenth row.
 
 ![Editing](screenshots/edit.png)
 
 ### Importing cards from txt/csv
 
-You can import cards from a comma-separated text file by choosing the `Multiple Choice Extende` note type in Anki's import dialog and mapping these columns:
+You can import cards from a comma-separated text file by choosing the `Multiple Choice Extended` note type in Anki's import dialog and mapping these columns:
 
 ```csv
 Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
@@ -87,7 +87,7 @@ Which numbers are even?,1,2,3,4,5,6,7,8,9,10,0 1 0 1 0 1 0 1 0 1,1
 Prompt you can give to an AI to generate cards:
 
 ```text
-Create Anki multiple-choice cards in CSV format for the note type "Multiple Choice Extende".
+Create Anki multiple-choice cards in CSV format for the note type "Multiple Choice Extended".
 Use this exact header:
 Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
 
@@ -119,7 +119,7 @@ If you want to change the way your answers are styled (e.g. color green what you
 - [I don't understand the colors](https://github.com/zjosua/anki-mc/pull/90)
   - Use the [addon's config](#addon-config) with `ALTERNATE_COLORING`
 - [Turn off shuffling/randomization of answers](https://github.com/zjosua/anki-mc/issues/87#issuecomment-1259818989)
-  - Possible by duplicating the note type `Multiple Choice Extende` and replacing `qanda = shuffle(qanda);` with `// qanda = shuffle(qanda);`.
+  - Possible by duplicating the note type `Multiple Choice Extended` and replacing `qanda = shuffle(qanda);` with `// qanda = shuffle(qanda);`.
 - More than 5 answer options
   - This fork raises the default supported choices from 5 to 10 (`Q_1` to `Q_10`).
 
