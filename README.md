@@ -47,12 +47,13 @@ Keyboard shortcuts support answer rows 1 to 10; use `Alt+0` for the tenth row.
 
 ### Importing cards from txt/csv
 
-You can import cards from a comma-separated text file by choosing the `Multiple Choice Extended` note type in Anki's import dialog and mapping these columns:
+You can import cards from a comma-separated text file by choosing the `Multiple Choice Extended` note type in Anki's import dialog.
+Use this exact column order so Anki can assign fields automatically without manual mapping:
 
 ```csv
-Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
-Which options are correct?,Option 1,Option 2,Option 3,Option 4,Option 5,Option 6,Option 7,Option 8,Option 9,Option 10,1 0 1 0 0 1 0 0 1 0,1
-Is this statement true?,True,False,,,,,,,,,1 0,2
+Question,Title,QType,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,Sources,Extra 1
+Which options are correct?,Simple example,1,Option 1,Option 2,Option 3,Option 4,Option 5,Option 6,Option 7,Option 8,Option 9,Option 10,1 0 1 0 0 1 0 0 1 0,,
+Is this statement true?,True or false,2,True,False,,,,,,,,,1 0,,
 ```
 
 For multiple choice (`QType` = `1`), `Answers` can contain several `1` values.
@@ -64,24 +65,27 @@ A ready-to-use example is included at [`docs/import_example_10_answers.csv`](doc
 Column meaning:
 
 - `Question`: the question text.
+- `Title`: an optional title. Leave it empty if you do not need it.
+- `QType`: use `1` for multiple choice, `2` for single choice, or `0` for Kprim.
 - `Q_1` to `Q_10`: possible answers. Leave unused answer columns empty.
 - `Answers`: one number per used answer, separated by spaces. Use `1` for correct and `0` for incorrect.
-- `QType`: use `1` for multiple choice, `2` for single choice, or `0` for Kprim.
+- `Sources`: optional sources. Leave it empty if you do not need it.
+- `Extra 1`: optional extra explanation. Leave it empty if you do not need it.
 
 Simple rule: if you wrote 4 possible answers, `Answers` must have 4 numbers. If you wrote 10 possible answers, `Answers` must have 10 numbers.
 
 Example with 4 possible answers:
 
 ```csv
-Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
-Which planet is known as the Red Planet?,Earth,Mars,Jupiter,Venus,,,,,,,0 1 0 0,2
+Question,Title,QType,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,Sources,Extra 1
+Which planet is known as the Red Planet?,Planets,2,Earth,Mars,Jupiter,Venus,,,,,,,0 1 0 0,,
 ```
 
 Example with 10 possible answers:
 
 ```csv
-Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
-Which numbers are even?,1,2,3,4,5,6,7,8,9,10,0 1 0 1 0 1 0 1 0 1,1
+Question,Title,QType,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,Sources,Extra 1
+Which numbers are even?,Even numbers,1,1,2,3,4,5,6,7,8,9,10,0 1 0 1 0 1 0 1 0 1,,
 ```
 
 Prompt you can give to an AI to generate cards:
@@ -89,10 +93,12 @@ Prompt you can give to an AI to generate cards:
 ```text
 Create Anki multiple-choice cards in CSV format for the note type "Multiple Choice Extended".
 Use this exact header:
-Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
+Question,Title,QType,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,Sources,Extra 1
 
 Rules:
 - Put the question in Question.
+- Put a short optional title in Title, or leave Title empty.
+- Put QType before the answer options.
 - Put each possible answer in Q_1, Q_2, Q_3, etc.
 - Use up to 10 possible answers.
 - Leave unused Q columns empty.
@@ -100,6 +106,8 @@ Rules:
 - Use 1 for correct answers and 0 for incorrect answers.
 - Use QType 1 when there can be multiple correct answers.
 - Use QType 2 when there is only one correct answer.
+- Leave Sources and Extra 1 empty unless useful.
+- Keep the exact column order so Anki imports without manual field mapping.
 - Return only CSV, no explanations.
 ```
 
