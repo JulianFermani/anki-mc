@@ -31,7 +31,7 @@ from multiple_choice.template import (
     set_front_template,
 )
 
-MODEL_QFMT = """# Start of the template front
+MODEL_QFMT_Q1_TO_Q5 = """# Start of the template front
 
 <div class="hidden" id="Q_1">{{Q_1}}</div>
 <div class="hidden" id="Q_2">{{Q_2}}</div>
@@ -42,12 +42,33 @@ MODEL_QFMT = """# Start of the template front
 # Rest of the template front with some fake matches: Q_4 Q_5 <div>
 """
 
+MODEL_QFMT = """# Start of the template front
+
+<div class="hidden" id="Q_1">{{Q_1}}</div>
+<div class="hidden" id="Q_2">{{Q_2}}</div>
+<div class="hidden" id="Q_3">{{Q_3}}</div>
+<div class="hidden" id="Q_4">{{Q_4}}</div>
+<div class="hidden" id="Q_5">{{Q_5}}</div>
+<div class="hidden" id="Q_6">{{Q_6}}</div>
+<div class="hidden" id="Q_7">{{Q_7}}</div>
+<div class="hidden" id="Q_8">{{Q_8}}</div>
+<div class="hidden" id="Q_9">{{Q_9}}</div>
+<div class="hidden" id="Q_10">{{Q_10}}</div>
+
+# Rest of the template front with some fake matches: Q_4 Q_5 <div>
+"""
+
 MODEL_QFMT_WITHOUT_Q5 = """# Start of the template front
 
 <div class="hidden" id="Q_1">{{Q_1}}</div>
 <div class="hidden" id="Q_2">{{Q_2}}</div>
 <div class="hidden" id="Q_3">{{Q_3}}</div>
 <div class="hidden" id="Q_4">{{Q_4}}</div>
+<div class="hidden" id="Q_6">{{Q_6}}</div>
+<div class="hidden" id="Q_7">{{Q_7}}</div>
+<div class="hidden" id="Q_8">{{Q_8}}</div>
+<div class="hidden" id="Q_9">{{Q_9}}</div>
+<div class="hidden" id="Q_10">{{Q_10}}</div>
 
 # Rest of the template front with some fake matches: Q_4 Q_5 <div>
 """
@@ -57,6 +78,11 @@ MODEL_QFMT_WITHOUT_Q5_Q2 = """# Start of the template front
 <div class="hidden" id="Q_1">{{Q_1}}</div>
 <div class="hidden" id="Q_3">{{Q_3}}</div>
 <div class="hidden" id="Q_4">{{Q_4}}</div>
+<div class="hidden" id="Q_6">{{Q_6}}</div>
+<div class="hidden" id="Q_7">{{Q_7}}</div>
+<div class="hidden" id="Q_8">{{Q_8}}</div>
+<div class="hidden" id="Q_9">{{Q_9}}</div>
+<div class="hidden" id="Q_10">{{Q_10}}</div>
 
 # Rest of the template front with some fake matches: Q_4 Q_5 <div>
 """
@@ -106,6 +132,8 @@ MODEL_QFMT_Q1_TO_Q7 = """# Start of the template front
 
 # Rest of the template front with some fake matches: Q_4 Q_5 <div>
 """
+
+MODEL_QFMT_Q1_TO_Q10 = MODEL_QFMT
 
 FIELDS_WITH_MISSING_DEFAULT_TITLE = [
     "Note ID",
@@ -231,14 +259,16 @@ class TestTemplateMethods(unittest.TestCase):
         update_model: MagicMock,
     ):
         field_dialog.model = get_default_model()
-        get_model_front_template_text.return_value = MODEL_QFMT
+        get_model_front_template_text.return_value = MODEL_QFMT_Q1_TO_Q5
 
         field: dict[str, Any] = {"name": "Q_6"}
 
         add_added_field_to_template(field_dialog, field)
 
         get_model_front_template_text.assert_called_once()
-        get_front_template_with_added_field.assert_called_once_with(field, MODEL_QFMT)
+        get_front_template_with_added_field.assert_called_once_with(
+            field, MODEL_QFMT_Q1_TO_Q5
+        )
         update_model.assert_called_once()
 
     def test_when_get_front_template_with_added_field_is_called_then_adds_correctly(
@@ -247,14 +277,14 @@ class TestTemplateMethods(unittest.TestCase):
         field: dict[str, Any] = {"name": "Q_6"}
 
         self.assertEqual(
-            get_front_template_with_added_field(field, MODEL_QFMT),
+            get_front_template_with_added_field(field, MODEL_QFMT_Q1_TO_Q5),
             MODEL_QFMT_WITH_ADDED_Q6,
         )
 
         field: dict[str, Any] = {"name": "Q_9"}
 
         self.assertEqual(
-            get_front_template_with_added_field(field, MODEL_QFMT),
+            get_front_template_with_added_field(field, MODEL_QFMT_Q1_TO_Q5),
             MODEL_QFMT_WITH_ADDED_Q9,
         )
 
@@ -274,6 +304,11 @@ class TestTemplateMethods(unittest.TestCase):
             "Q_3",
             "Q_4",
             "Q_5",
+            "Q_6",
+            "Q_7",
+            "Q_8",
+            "Q_9",
+            "Q_10",
             "Extra 1",
         ]
 

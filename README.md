@@ -7,6 +7,7 @@ Adds multiple choice cards to Anki.
 - [Compatibility](#compatibility)
 - [Usage](#usage)
   - [Creating / Editing](#creating--editing)
+  - [Importing cards from txt/csv](#importing-cards-from-txtcsv)
   - [Reviewing](#reviewing)
   - [Addon Config](#addon-config)
   - [Known Issues](#known-issues)
@@ -36,10 +37,71 @@ The question type can be selected with the field "QType".
 It can be either 0 (Kprim), 1 (Multiple Choice) or 2 (Single Choice).
 The [Screenshots](#screenshots) section shows how the question types look.
 These values in the "Answer" field must be separated by a single space.
-The order and number of values in the "Answer" field must correspond with the choices "Q_1" to "Q_5".
+This fork supports up to 10 answer choices per note, using fields `Q_1` through `Q_10`.
+The order and number of values in the "Answer" field must correspond with the choices `Q_1` to `Q_10`.
 If you don't need all the choices, just leave the remaining "Q_" fields blank and only enter as many values as you need in the "Answers" field.
+Existing default notes with the original five choices are upgraded by adding fields `Q_6` to `Q_10` when the add-on updates the note type.
+Keyboard shortcuts support answer rows 1 to 10; use `Alt+0` for the tenth row.
 
 ![Editing](screenshots/edit.png)
+
+### Importing cards from txt/csv
+
+You can import cards from a comma-separated text file by choosing the `AllInOne (kprim, mc, sc)` note type in Anki's import dialog and mapping these columns:
+
+```csv
+Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
+Which options are correct?,Option 1,Option 2,Option 3,Option 4,Option 5,Option 6,Option 7,Option 8,Option 9,Option 10,1 0 1 0 0 1 0 0 1 0,1
+Is this statement true?,True,False,,,,,,,,,1 0,2
+```
+
+For multiple choice (`QType` = `1`), `Answers` can contain several `1` values.
+For single choice (`QType` = `2`), use one `1` and mark the rest as `0`.
+For Kprim (`QType` = `0`), each answer is evaluated as yes/no.
+
+A ready-to-use example is included at [`docs/import_example_10_answers.csv`](docs/import_example_10_answers.csv).
+
+Column meaning:
+
+- `Question`: the question text.
+- `Q_1` to `Q_10`: possible answers. Leave unused answer columns empty.
+- `Answers`: one number per used answer, separated by spaces. Use `1` for correct and `0` for incorrect.
+- `QType`: use `1` for multiple choice, `2` for single choice, or `0` for Kprim.
+
+Simple rule: if you wrote 4 possible answers, `Answers` must have 4 numbers. If you wrote 10 possible answers, `Answers` must have 10 numbers.
+
+Example with 4 possible answers:
+
+```csv
+Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
+Which planet is known as the Red Planet?,Earth,Mars,Jupiter,Venus,,,,,,,0 1 0 0,2
+```
+
+Example with 10 possible answers:
+
+```csv
+Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
+Which numbers are even?,1,2,3,4,5,6,7,8,9,10,0 1 0 1 0 1 0 1 0 1,1
+```
+
+Prompt you can give to an AI to generate cards:
+
+```text
+Create Anki multiple-choice cards in CSV format for the note type "AllInOne (kprim, mc, sc)".
+Use this exact header:
+Question,Q_1,Q_2,Q_3,Q_4,Q_5,Q_6,Q_7,Q_8,Q_9,Q_10,Answers,QType
+
+Rules:
+- Put the question in Question.
+- Put each possible answer in Q_1, Q_2, Q_3, etc.
+- Use up to 10 possible answers.
+- Leave unused Q columns empty.
+- In Answers, write one number per used answer, separated by spaces.
+- Use 1 for correct answers and 0 for incorrect answers.
+- Use QType 1 when there can be multiple correct answers.
+- Use QType 2 when there is only one correct answer.
+- Return only CSV, no explanations.
+```
 
 ### Reviewing
 
@@ -58,8 +120,8 @@ If you want to change the way your answers are styled (e.g. color green what you
   - Use the [addon's config](#addon-config) with `ALTERNATE_COLORING`
 - [Turn off shuffling/randomization of answers](https://github.com/zjosua/anki-mc/issues/87#issuecomment-1259818989)
   - Possible by duplicating the note type `AllInOne (kprim, mc, sc)` and replacing `qanda = shuffle(qanda);` with `// qanda = shuffle(qanda);`.
-- [More than 5 answer options](https://github.com/zjosua/anki-mc/issues/81)
-  - Possible with slight modification of the note type (fields) and tempalte HTML
+- More than 5 answer options
+  - This fork raises the default supported choices from 5 to 10 (`Q_1` to `Q_10`).
 
 ## License and Credits
 

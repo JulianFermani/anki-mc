@@ -20,6 +20,11 @@
 <div class="hidden" id="Q_3">{{Q_3}}</div>
 <div class="hidden" id="Q_4">{{Q_4}}</div>
 <div class="hidden" id="Q_5">{{Q_5}}</div>
+<div class="hidden" id="Q_6">{{Q_6}}</div>
+<div class="hidden" id="Q_7">{{Q_7}}</div>
+<div class="hidden" id="Q_8">{{Q_8}}</div>
+<div class="hidden" id="Q_9">{{Q_9}}</div>
+<div class="hidden" id="Q_10">{{Q_10}}</div>
 
 <script>
     // Options are modified according to user's meta.json in the addon's folder
@@ -239,8 +244,10 @@
         let tableBody = document.getElementById("qtable").getElementsByTagName('tbody')[0];
         var tableRows = tableBody.getElementsByTagName("tr");
 
-        if (0 < +keyName && +keyName < 10) {
-            let tableData = tableRows[+keyName - 1].getElementsByTagName("td")[0];
+        const rowNumber = keyName === '0' ? 10 : +keyName;
+
+        if (0 < rowNumber && rowNumber <= tableRows.length) {
+            let tableData = tableRows[rowNumber - 1].getElementsByTagName("td")[0];
             let tableRow = tableData.getElementsByTagName("input")[0];
             tableRow.checked = !tableRow.checked;
             onCheck();
@@ -266,7 +273,7 @@
     function run() {
         // for previewing the cards in "Manage Note Type..."
         let DEFAULT_CARD_TYPE = 1;
-        let DEFAULT_SOLUTIONS = "1 0 0 0 0";
+        let DEFAULT_SOLUTIONS = "1 0 0 0 0 0 0 0 0 0";
 
         if (isNaN(document.getElementById("Card_Type").innerHTML)) {
             document.getElementById("Card_Type").innerHTML = DEFAULT_CARD_TYPE;

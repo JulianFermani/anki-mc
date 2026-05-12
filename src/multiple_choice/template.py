@@ -52,8 +52,8 @@ from aqt import Collection, fields, mw
 from .config import *
 from .packaging import version
 
-aio_model_name = "AllInOne (kprim, mc, sc)"
-aio_card = "AllInOne (kprim, mc, sc)"
+aio_model_name = "AllInOne10"
+aio_card = "AllInOne10"
 aio_fields = {
     "question": "Question",
     "title": "Title",
@@ -63,13 +63,19 @@ aio_fields = {
     "q3": "Q_3",
     "q4": "Q_4",
     "q5": "Q_5",
+    "q6": "Q_6",
+    "q7": "Q_7",
+    "q8": "Q_8",
+    "q9": "Q_9",
+    "q10": "Q_10",
     "answers": "Answers",
     "sources": "Sources",
     "extra": "Extra 1",
 }
 
 QUESTION_ID_PATTERN = r"^Q_(\d+)$"
-DEFAULT_NUMBER_OF_QUESTIONS = 5
+LEGACY_DEFAULT_NUMBER_OF_QUESTIONS = 5
+DEFAULT_NUMBER_OF_QUESTIONS = 10
 
 
 class Template_side(Enum):
@@ -166,11 +172,11 @@ def adjust_number_of_question_fields(model) -> None:
 
     model_manager = mw.col.models
     field_names = model_manager.field_names(model)
+    add_missing_fields(model, field_names)
+    field_names = model_manager.field_names(model)
     number_of_question_fields = len(
         [name for name in field_names if re.match(QUESTION_ID_PATTERN, name)]
     )
-
-    add_missing_fields(model, field_names)
 
     if number_of_question_fields > DEFAULT_NUMBER_OF_QUESTIONS:
         for i in range(DEFAULT_NUMBER_OF_QUESTIONS + 1, number_of_question_fields + 1):
@@ -218,9 +224,14 @@ def add_fields(models, model):
 def add_missing_fields(model, current_field_names: list[str]):
     models = mw.col.models
 
-    for default_field_name in filter(
-        lambda n: not re.match(QUESTION_ID_PATTERN, n), aio_fields.values()
-    ):
+    question_field_count = len(
+        [name for name in current_field_names if re.match(QUESTION_ID_PATTERN, name)]
+    )
+
+    for default_field_name in aio_fields.values():
+        is_question_field = re.match(QUESTION_ID_PATTERN, default_field_name)
+        if is_question_field and question_field_count != LEGACY_DEFAULT_NUMBER_OF_QUESTIONS:
+            continue
         if default_field_name not in current_field_names:
             fld = models.new_field(default_field_name)
             models.add_field(model, fld)
