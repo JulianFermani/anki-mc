@@ -52,8 +52,8 @@ from aqt import Collection, fields, mw
 from .config import *
 from .packaging import version
 
-aio_model_name = "AllInOne10"
-aio_card = "AllInOne10"
+aio_model_name = "Multiple Choice Extende"
+aio_card = "Multiple Choice Extende"
 aio_fields = {
     "question": "Question",
     "title": "Title",
