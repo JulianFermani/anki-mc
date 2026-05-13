@@ -19,7 +19,15 @@
 <script>
     "use strict";
 
+    function getCardType() {
+        const rawType = document.getElementById("CardType").textContent.trim();
+        return [0, 1, 2].includes(Number(rawType)) ? Number(rawType) : 1;
+    }
+
     function onLoad() {
+        var type = getCardType();
+        var canswers = 0;
+        var solutions = [];
         // Check if Persistence is recognized to prevent errors when viewing note in "Manage Note Types..."
         if (Persistence.isAvailable && Persistence.getItem('Q_solutions') !== null) {
 
@@ -64,16 +72,15 @@
                     row.setAttribute("class", colorOptions.wrongButTicked);
                 } else if ((solution === 1) && (answer === 0)) {
                     row.setAttribute("class", colorOptions.correctButNotTicked);
-                } else if (type == 0 && (answer === 2)) {
+                } else if (type === 0 && (answer === 2)) {
                     row.setAttribute("class", colorOptions.withoutSelection);
                 }
             }
 
             // Parsing solutions
-            var solutions = Persistence.getItem('Q_solutions');
+            solutions = Persistence.getItem('Q_solutions');
             var answers = Persistence.getItem('user_answers');
 
-            var type = document.getElementById('CardType').innerHTML;
             var qtable = document.getElementById('qtable');
             qtable.innerHTML = Persistence.getItem('qtable');
 
@@ -91,7 +98,7 @@
                 var qrows = qtable.getElementsByTagName('tbody')[0].getElementsByTagName("tr");
                 for (let i = 0; i < answers.length; i++) {
                     //Set the radio buttons in the qtable.
-                    if (type == 0) {
+                    if (type === 0) {
                         if (answers[i] === 1) {
                             let radioButton = qrows[i + 1].getElementsByTagName("td")[0].getElementsByTagName("input")[0];
                             radioButton.checked = true;
@@ -108,19 +115,18 @@
                     }
                     //Colorize the qtable.
                     if (OPTIONS.qtable.colorize) {
-                        colorizeTableRow(qrows[(type != 0) ? i : i + 1], "qtable", solutions[i], answers[i]);
+                        colorizeTableRow(qrows[(type !== 0) ? i : i + 1], "qtable", solutions[i], answers[i]);
                     }
                 }
             } else qtable.innerHTML = ""
 
-            var canswers = 0;
             for (let i = 0; i < solutions.length; i++) {
                 if (OPTIONS.atable.visible) {
                     //Rename the radio buttons of the atable to avoid interference with those in the qtable.
-                    if (type == 0) arows[i + 1].getElementsByTagName("td")[1].getElementsByTagName("input")[0].setAttribute("name", "ans_" + ((type != 2) ? String(i + 1) : 'A') + "_solution");
-                    arows[(type != 0) ? i : i + 1].getElementsByTagName("td")[0].getElementsByTagName("input")[0].setAttribute("name", "ans_" + ((type != 2) ? String(i + 1) : 'A') + "_solution");
+                    if (type === 0) arows[i + 1].getElementsByTagName("td")[1].getElementsByTagName("input")[0].setAttribute("name", "ans_" + ((type !== 2) ? String(i + 1) : 'A') + "_solution");
+                    arows[(type !== 0) ? i : i + 1].getElementsByTagName("td")[0].getElementsByTagName("input")[0].setAttribute("name", "ans_" + ((type !== 2) ? String(i + 1) : 'A') + "_solution");
                     //Set the radio buttons in the atable.
-                    if (type == 0) {
+                    if (type === 0) {
                         let radioButton = arows[i + 1].getElementsByTagName("td")[solutions[i] ? 0 : 1].getElementsByTagName("input")[0];
                         radioButton.checked = true;
                         radioButton.disabled = true;
@@ -132,7 +138,7 @@
                     }
                     //Colorize the atable.
                     if (OPTIONS.atable.colorize) {
-                        colorizeTableRow(arows[(type != 0) ? i : i + 1], "atable", solutions[i], answers[i]);
+                        colorizeTableRow(arows[(type !== 0) ? i : i + 1], "atable", solutions[i], answers[i]);
                     }
                 }
 
@@ -145,7 +151,7 @@
             }
         }
         var canswerresult = document.getElementById("canswerresult");
-        if (type == 2) {
+        if (type === 2) {
             canswerresult.innerHTML = "<b>" + ((canswers / solutions.length == 1) ? "Correct.</b>" : "Nope.</b>");
         } else {
             canswerresult.innerHTML = "<b>Correct answers: " + Math.round(canswers / solutions.length * 100) + " %</b>";
@@ -171,7 +177,7 @@
             // To make sure there isn't a previously registered event handler lingering into the next review
             document.removeEventListener('keydown', tickCheckboxOnNumberKeyDown, false);
         }
-        setTimeout(onLoad(), 1);
+        setTimeout(onLoad, 1);
     }
 
     async function waitForReadyStateAndRun() {
