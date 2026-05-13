@@ -27,15 +27,19 @@ label {
 }
 
 .correct {
-  background-color: lime;
+  background-color: #c8f7c5;
 }
 
 .nightMode .correct {
-  background-color: #009900;
+  background-color: #2f6f4e;
 }
 
 .wrong {
-  background-color: OrangeRed;
+  background-color: #ffd1dc;
+}
+
+.nightMode .wrong {
+  background-color: #7a3f4b;
 }
 
 .hidden {
