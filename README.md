@@ -5,6 +5,7 @@ Adds multiple choice cards to Anki.
 
 - [Screenshots](#screenshots)
 - [Compatibility](#compatibility)
+- [Local Installation](#local-installation)
 - [Usage](#usage)
   - [Creating / Editing](#creating--editing)
   - [Importing cards from txt/csv](#importing-cards-from-txtcsv)
@@ -25,6 +26,45 @@ Anki 2.1.55 or higher is required for the most recent version of this add-on to 
 For Anki 2.1.44 to 2.1.54, you can use v2.8.0 (or lower) of the add-on.
 
 Cards created with this add-on can be reviewed with all Computer and mobile apps and on AnkiWeb.
+
+## Local Installation
+
+If you cloned this repository locally, install the add-on by copying only the add-on package folder into Anki's `addons21` directory.
+
+On Windows, the usual destination is:
+
+```text
+C:\Users\YOUR_USER\AppData\Roaming\Anki2\addons21\multiple_choice
+```
+
+From this repository, copy this folder:
+
+```text
+src\multiple_choice
+```
+
+The final structure should look like this:
+
+```text
+addons21\multiple_choice\
+  __init__.py
+  template.py
+  config.py
+  config.json
+  config.md
+  card\
+    front.html
+    back.html
+    css.css
+  packaging\
+    ...
+```
+
+After copying it, close Anki completely and open it again.
+The add-on should create the note type `Multiple Choice Extended` automatically.
+
+If you already have the original AnkiWeb add-on installed, this fork uses a different note type name to avoid overwriting it, but the Python module folder is still `multiple_choice`.
+Do not install two local copies with the same `multiple_choice` folder name at the same time.
 
 ## Usage
 
