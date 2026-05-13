@@ -175,6 +175,9 @@ If you want to change the way your answers are styled (e.g. color green what you
 
 *Multiple Choice for Anki* is *Copyright © 2023 [3ter](https://github.com/3ter) and [zjosua](https://github.com/zjosua)*
 
+This extended fork is maintained by [JulianFermani](https://github.com/JulianFermani).
+The fork adds support for up to 10 answer options, the `Multiple Choice Extended` note type, and CSV import documentation.
+
 It is licensed under the AGPLv3.
 For more information refer to the [LICENSE](https://github.com/zjosua/anki-mc/blob/master/LICENSE) file.
 
